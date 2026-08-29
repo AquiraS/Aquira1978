@@ -15,12 +15,15 @@ const escapeHtml = (value) => String(value)
 const absoluteUrl = (pathname) => new URL(pathname, `${content.site.origin}/`).href;
 const jsonForHtml = (value) => JSON.stringify(value, null, 2).replaceAll("<", "\\u003c");
 
-function networkCards() {
+function networkCards({ chapterCards = false } = {}) {
   return `<div class="network-grid">${content.network.map((item, index) => {
     const isCurrentSite = item.href === content.site.origin + "/";
     const linkText = `${isCurrentSite ? "このサイト" : "公式サイト"}を見る`;
     const ariaLabel = `${item.label}のホームページを開く`;
-    return `<article class="network-card"><a class="network-card__link" href="${escapeHtml(item.href)}"${isCurrentSite ? "" : ' rel="external noopener noreferrer"'} aria-label="${escapeHtml(ariaLabel)}"><p class="index">0${index + 1}</p><p class="role">${escapeHtml(item.role)}</p><h3>${escapeHtml(item.label)}</h3><p>${escapeHtml(item.text)}</p><span class="network-card__cta">${escapeHtml(linkText)} <span aria-hidden="true">→</span></span></a></article>`;
+    const cardClass = `network-card${chapterCards && isCurrentSite ? " network-card--current" : ""}`;
+    const chapterAttributes = chapterCards ? ` data-chapter-card data-journey-step="${item.step}"` : "";
+    const chapterLine = chapterCards ? `<p class="network-card__chapter">CHAPTER ${item.step} · ${escapeHtml(item.chapter)}${isCurrentSite ? ` <span class="network-card__current">${escapeHtml(content.journey.currentLabel)}</span>` : ""}</p>` : "";
+    return `<article class="${cardClass}"${chapterAttributes}><a class="network-card__link" href="${escapeHtml(item.href)}"${isCurrentSite ? "" : ' rel="external noopener noreferrer"'} aria-label="${escapeHtml(ariaLabel)}">${chapterLine}<p class="index">${item.step}</p><p class="role">${escapeHtml(item.role)}</p><h3>${escapeHtml(item.label)}</h3><p>${escapeHtml(item.text)}</p><span class="network-card__cta">${escapeHtml(linkText)} <span aria-hidden="true">→</span></span></a></article>`;
   }).join("")}</div>`;
 }
 
@@ -30,6 +33,16 @@ function header(pathname) {
     ["お問い合わせ", "/contact/"],
   ];
   return `<header class="site-header"><a class="wordmark" href="/" aria-label="Aquira1978 ホーム">AQUIRA1978</a><nav aria-label="主要ナビゲーション">${links.map(([label, href]) => `<a href="${href}"${pathname === href ? ' aria-current="page"' : ""}>${label}</a>`).join("")}</nav><a class="header-contact" href="mailto:${content.contact.email}">お問い合わせ</a></header>`;
+}
+
+function journeyRail() {
+  const currentStep = content.journey.chapters.find((chapter) => chapter.href === `${content.site.origin}/`)?.step;
+  if (!currentStep) throw new Error("Journey configuration must include the site origin");
+  return `<nav class="journey-rail" aria-label="${escapeHtml(content.journey.ariaLabel)}"><div class="journey-rail__inner"><p class="journey-rail__eyebrow">${escapeHtml(content.journey.eyebrow)} <span>${escapeHtml(content.journey.eyebrowDetail)}</span></p><ol class="journey-rail__list">${content.journey.chapters.map((chapter) => {
+    const isCurrent = chapter.step === currentStep;
+    const ariaLabel = `第${chapter.step}章 ${chapter.chapter}：${chapter.label}${isCurrent ? `（${content.journey.currentLabel}）` : ""}`;
+    return `<li class="journey-rail__item${isCurrent ? " journey-rail__item--current" : ""}"><a href="${escapeHtml(chapter.href)}" aria-label="${escapeHtml(ariaLabel)}"${isCurrent ? ' aria-current="step"' : ""}><span class="journey-rail__number" aria-hidden="true">${chapter.step}</span><span class="journey-rail__chapter">${escapeHtml(chapter.chapter)}</span><span class="journey-rail__destination">${escapeHtml(chapter.label)}</span>${isCurrent ? `<span class="journey-rail__current">${escapeHtml(content.journey.currentLabel)}</span>` : ""}</a></li>`;
+  }).join("")}</ol></div></nav>`;
 }
 
 function footer() {
@@ -57,7 +70,8 @@ function layout({ pathname, title, description, main, type }) {
   <link rel="canonical" href="${absoluteUrl(pathname)}" />
   <link rel="alternate" href="${absoluteUrl(pathname)}" hreflang="ja" />
   <link rel="alternate" href="${absoluteUrl(pathname)}" hreflang="x-default" />
-  <link rel="stylesheet" href="/styles.css?v=20260828" />
+  <link rel="stylesheet" href="/styles.css?v=20260829" />
+  <script src="/journey.js" defer></script>
   <meta property="og:locale" content="ja_JP" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Aquira1978" />
@@ -67,9 +81,10 @@ function layout({ pathname, title, description, main, type }) {
   <meta name="twitter:card" content="summary" />
   <script type="application/ld+json">${jsonForHtml({ "@context": "https://schema.org", "@graph": schemas(pathname, title, description, type) })}</script>
 </head>
-<body>
+<body data-journey-stage="${escapeHtml(content.journey.stage)}">
   <a class="skip-link" href="#main-content">本文へ移動</a>
   ${header(pathname)}
+  ${journeyRail()}
   <main id="main-content">${main}</main>
   ${footer()}
 </body>
@@ -78,7 +93,7 @@ function layout({ pathname, title, description, main, type }) {
 
 const homeTitle = "Aquira1978｜起点と記録";
 const homeDescription = content.site.description;
-const homeMain = `<section class="hero"><p class="eyebrow">${content.role.eyebrow}</p><h1>${content.role.title}</h1><p class="lead">${content.role.lead}</p><a class="button" href="/about/">記録について知る</a></section><section class="section" aria-labelledby="purpose-title"><div class="section-heading"><p class="eyebrow">PURPOSE</p><h2 id="purpose-title">記録に、文脈を添える。</h2></div><div class="card-grid">${content.purpose.map((item) => `<article class="content-card"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></article>`).join("")}</div></section><section class="section section-muted" aria-labelledby="network-title"><div class="section-heading"><p class="eyebrow">OFFICIAL NETWORK</p><h2 id="network-title">3つの入口、ひとつの文脈。</h2></div><p class="statement">Aquiraの公式サイトは、情報の種類ごとに役割を分けています。探している内容に合うサイトへ、明確にご案内します。</p>${networkCards()}</section><section class="section contact-section" aria-labelledby="home-contact-title"><div class="section-heading"><p class="eyebrow">CONTACT</p><h2 id="home-contact-title">記録の確認から、静かに。</h2></div><p class="statement">掲載内容の訂正、公式表記、名称・記録に関するご相談を受け付けています。</p><a class="button" href="/contact/">お問い合わせへ</a></section>`;
+const homeMain = `<section class="hero"><p class="eyebrow">${content.role.eyebrow}</p><h1>${content.role.title}</h1><p class="lead">${content.role.lead}</p><a class="button" href="/about/">記録について知る</a></section><section class="section" aria-labelledby="purpose-title"><div class="section-heading"><p class="eyebrow">PURPOSE</p><h2 id="purpose-title">記録に、文脈を添える。</h2></div><div class="card-grid">${content.purpose.map((item) => `<article class="content-card"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></article>`).join("")}</div></section><section class="section section-muted" aria-labelledby="network-title"><div class="section-heading"><p class="eyebrow">OFFICIAL NETWORK</p><h2 id="network-title">3つの入口、ひとつの文脈。</h2></div><p class="statement">Aquiraの公式サイトは、情報の種類ごとに役割を分けています。探している内容に合うサイトへ、明確にご案内します。</p>${networkCards({ chapterCards: true })}</section><section class="section contact-section" aria-labelledby="home-contact-title"><div class="section-heading"><p class="eyebrow">CONTACT</p><h2 id="home-contact-title">記録の確認から、静かに。</h2></div><p class="statement">掲載内容の訂正、公式表記、名称・記録に関するご相談を受け付けています。</p><a class="button" href="/contact/">お問い合わせへ</a></section>`;
 
 const aboutTitle = "記録について｜Aquira1978";
 const aboutDescription = "Aquira1978における記録の基準、更新の考え方、公式ネットワークの役割を案内します。";

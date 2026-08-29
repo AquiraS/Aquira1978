@@ -2,6 +2,33 @@
  * Aquira1978 編集用コンテンツ
  * 原則: 検証済みでない経歴、実績、権利、サービス、料金は公開しない。
  */
+const journeyChapters = [
+  {
+    step: "01",
+    chapter: "作品と出会う",
+    label: "作品・表現",
+    role: "OFFICIAL ARTIST HOME",
+    text: "作品、作家プロフィール、協働、利用許諾に関する公式情報。",
+    href: "https://www.aquira.art/",
+  },
+  {
+    step: "02",
+    chapter: "起点をたどる",
+    label: "起点・記録",
+    role: "ORIGIN & ARCHIVE",
+    text: "名称の由来、来歴、アーカイブ、ブランド利用に関する記録。",
+    href: "https://www.aquira1978.com/",
+  },
+  {
+    step: "03",
+    chapter: "対話へひらく",
+    label: "公共的実践",
+    role: "PROJECTS & DIALOGUE",
+    text: "対話、協働、社会と交わるプロジェクトの記録と入口。",
+    href: "https://www.aquira.org/",
+  },
+];
+
 const siteContent = {
   site: {
     name: "Aquira1978",
@@ -44,26 +71,15 @@ const siteContent = {
     lead: "名称の由来、記録の訂正、公式表記、掲載・利用に関するご相談は、対象となる内容、掲載先または利用目的、予定時期を添えてお知らせください。相談だけで利用許可が成立することはありません。",
     email: "aquirae@me.com",
   },
-  network: [
-    {
-      label: "作品・表現",
-      role: "OFFICIAL ARTIST HOME",
-      text: "作品、作家プロフィール、協働、利用許諾に関する公式情報。",
-      href: "https://www.aquira.art/",
-    },
-    {
-      label: "起点・記録",
-      role: "ORIGIN & ARCHIVE",
-      text: "名称の由来、来歴、アーカイブ、ブランド利用に関する記録。",
-      href: "https://www.aquira1978.com/",
-    },
-    {
-      label: "公共的実践",
-      role: "PROJECTS & DIALOGUE",
-      text: "対話、協働、社会と交わるプロジェクトの記録と入口。",
-      href: "https://www.aquira.org/",
-    },
-  ],
+  journey: {
+    stage: "origin",
+    ariaLabel: "AQUIRAをめぐる3章",
+    eyebrow: "AQUIRA JOURNEY",
+    eyebrowDetail: "3つの公式サイトをめぐる",
+    currentLabel: "現在地",
+    chapters: journeyChapters,
+  },
+  network: journeyChapters,
 };
 
 export default siteContent;
