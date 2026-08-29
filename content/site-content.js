@@ -35,7 +35,7 @@ const siteContent = {
     shortName: "AQUIRA1978",
     origin: "https://www.aquira1978.com",
     description: "Aquiraの名称の起点、来歴、アーカイブ、ブランド利用に関する記録を扱う公式サイトです。",
-    lastModified: "2026-08-28",
+    lastModified: "2026-08-29",
   },
   role: {
     eyebrow: "ORIGIN & ARCHIVE",
@@ -70,6 +70,10 @@ const siteContent = {
     title: "記録・公式表記に関するお問い合わせ",
     lead: "名称の由来、記録の訂正、公式表記、掲載・利用に関するご相談は、対象となる内容、掲載先または利用目的、予定時期を添えてお知らせください。相談だけで利用許可が成立することはありません。",
     email: "aquirae@me.com",
+  },
+  news: {
+    label: "News",
+    href: "https://note.com/aquira",
   },
   journey: {
     stage: "origin",

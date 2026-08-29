@@ -14,6 +14,7 @@ const officialNetworkLinks = [
   { step: "03", chapter: "対話へひらく", label: "公共的実践", href: "https://www.aquira.org/" },
 ];
 const currentJourneyStep = "02";
+const newsLink = '<a href="https://note.com/aquira" target="_blank" rel="external noopener noreferrer" aria-label="Newsを新しいタブで開く">News</a>';
 
 function attribute(attributes, name) {
   return attributes.match(new RegExp(`\\s${name}="([^"]*)"`))?.[1];
@@ -67,6 +68,7 @@ for (const [file, canonical, type] of pages) {
   for (const { label, href } of officialNetworkLinks) {
     assert(footerLinks.some((link) => link.label === label && link.href === href), `${file}: footer must map ${label} to ${href}`);
   }
+  assert(footer.split(newsLink).length - 1 === 1 && html.split(newsLink).length - 1 === 1, `${file}: footer must contain exactly one canonical News link`);
 }
 
 for (const file of ["index.html", "about/index.html"]) {
