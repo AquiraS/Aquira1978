@@ -1,0 +1,10 @@
+from,to,action,reason,status
+/blank,/about/,301,Replace opaque About path with archive and record context,review-required
+/blank-1,/about/,301,Consolidate history path into the verified record context,review-required
+/blank-5,/contact/,301,Replace opaque contact path with stable contact URL,review-required
+/portfolio,,410,Remove generic portfolio template from founder and archive site,review-required
+/portfolio/test,,410,Remove test portfolio URL from public index,review-required
+/copy-of-portfolio/test,,410,Remove duplicate test portfolio URL from public index,review-required
+/referral,,410,Remove unavailable referral page from public index,review-required
+/refer-friends,,410,Remove unavailable referral page from public index,review-required
+/my-addresses,,410,Remove member-only address page from public index,review-required
