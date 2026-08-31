@@ -37,6 +37,9 @@ const siteContent = {
     description: "Aquiraの名称の起点、来歴、アーカイブ、ブランド利用に関する記録を扱う公式サイトです。",
     lastModified: "2026-08-31",
   },
+  analytics: {
+    measurementId: "G-ZHRCFRBR5F",
+  },
   role: {
     eyebrow: "ORIGIN & ARCHIVE",
     title: "名前の起点と、歩みの記録。",

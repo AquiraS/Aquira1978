@@ -1,0 +1,32 @@
+/* Consent controls are loaded after the core stylesheet to preserve the archival visual system. */
+.analytics-consent {
+  position: fixed;
+  z-index: 10;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  width: min(31rem, calc(100vw - 2.5rem));
+  padding: 1.1rem;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  box-shadow: 0 .7rem 2rem rgba(0, 0, 0, .14);
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: .82rem;
+  line-height: 1.6;
+}
+.analytics-consent[hidden] { display: none; }
+.analytics-consent p { margin: 0; }
+.analytics-consent__actions, .analytics-preferences { display: flex; flex-wrap: wrap; gap: .7rem; align-items: center; margin: 1rem 0 0; }
+.analytics-consent__decline {
+  padding: .65rem .82rem;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  font: 700 .75rem var(--ui);
+  cursor: pointer;
+}
+.analytics-consent__decline:hover, .analytics-consent__decline:focus-visible { border-color: var(--accent); color: var(--accent); }
+.analytics-preferences .button, .analytics-preferences .analytics-consent__decline { margin-top: .25rem; }
+@media (max-width: 700px) {
+  .analytics-consent { right: 1rem; bottom: 1rem; width: calc(100vw - 2rem); }
+}

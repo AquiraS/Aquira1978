@@ -1,9 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://www.aquira1978.com/</loc><lastmod>2026-08-31</lastmod></url>
-  <url><loc>https://www.aquira1978.com/about/</loc><lastmod>2026-08-31</lastmod></url>
-  <url><loc>https://www.aquira1978.com/contact/</loc><lastmod>2026-08-31</lastmod></url>
-  <url><loc>https://www.aquira1978.com/en/</loc><lastmod>2026-08-31</lastmod></url>
-  <url><loc>https://www.aquira1978.com/en/about/</loc><lastmod>2026-08-31</lastmod></url>
-  <url><loc>https://www.aquira1978.com/en/contact/</loc><lastmod>2026-08-31</lastmod></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://www.aquira1978.com/</loc>
+    <xhtml:link rel="alternate" hreflang="ja-JP" href="https://www.aquira1978.com/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.aquira1978.com/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.aquira1978.com/en/" />
+    <lastmod>2026-08-31</lastmod>
+  </url>
+  <url>
+    <loc>https://www.aquira1978.com/about/</loc>
+    <xhtml:link rel="alternate" hreflang="ja-JP" href="https://www.aquira1978.com/about/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.aquira1978.com/en/about/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.aquira1978.com/en/about/" />
+    <lastmod>2026-08-31</lastmod>
+  </url>
+  <url>
+    <loc>https://www.aquira1978.com/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="ja-JP" href="https://www.aquira1978.com/contact/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.aquira1978.com/en/contact/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.aquira1978.com/en/contact/" />
+    <lastmod>2026-08-31</lastmod>
+  </url>
+  <url>
+    <loc>https://www.aquira1978.com/privacy/</loc>
+    <xhtml:link rel="alternate" hreflang="ja-JP" href="https://www.aquira1978.com/privacy/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.aquira1978.com/en/privacy/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.aquira1978.com/en/privacy/" />
+    <lastmod>2026-08-31</lastmod>
+  </url>
+  <url>
+    <loc>https://www.aquira1978.com/en/</loc>
+    <xhtml:link rel="alternate" hreflang="ja-JP" href="https://www.aquira1978.com/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.aquira1978.com/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.aquira1978.com/en/" />
+    <lastmod>2026-08-31</lastmod>
+  </url>
+  <url>
+    <loc>https://www.aquira1978.com/en/about/</loc>
+    <xhtml:link rel="alternate" hreflang="ja-JP" href="https://www.aquira1978.com/about/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.aquira1978.com/en/about/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.aquira1978.com/en/about/" />
+    <lastmod>2026-08-31</lastmod>
+  </url>
+  <url>
+    <loc>https://www.aquira1978.com/en/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="ja-JP" href="https://www.aquira1978.com/contact/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.aquira1978.com/en/contact/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.aquira1978.com/en/contact/" />
+    <lastmod>2026-08-31</lastmod>
+  </url>
+  <url>
+    <loc>https://www.aquira1978.com/en/privacy/</loc>
+    <xhtml:link rel="alternate" hreflang="ja-JP" href="https://www.aquira1978.com/privacy/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://www.aquira1978.com/en/privacy/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.aquira1978.com/en/privacy/" />
+    <lastmod>2026-08-31</lastmod>
+  </url>
 </urlset>
