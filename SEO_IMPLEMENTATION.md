@@ -11,7 +11,7 @@ This release makes `https://www.aquira1978.com/en/` the technically explicit **U
 | Canonical URLs | Every page self-canonicalizes to `https://www.aquira1978.com`. | Consolidates the preferred public URL for indexing. |
 | US-English targeting | English pages use `lang="en-US"`, `hreflang="en-US"`, and an English `x-default`; Japanese equivalents use `ja-JP`. | Makes the intended English audience explicit while preserving Japanese-language discovery. |
 | Reciprocal localization | Every localized URL lists itself and its Japanese/English counterpart in both HTML and XML sitemap. | Meets Google’s reciprocal localization pattern. [1] |
-| Index discovery | The root XML sitemap lists all eight indexable bilingual pages and is declared in `robots.txt`. | Gives crawlers a current, canonical inventory. [2] |
+| Index discovery | The root XML sitemap lists all sixteen indexable bilingual pages and is declared in `robots.txt`. | Gives crawlers a current, canonical inventory. [2] |
 | Entity clarity | The US-English homepage includes restrained `Organization`, `WebSite`, and `WebPage` JSON-LD using only official URLs and the published contact address. | Helps disambiguate the official site and its network. [3] |
 | Snippet quality | US-English title, description, Open Graph, image-alt, and hero copy explicitly identify the official Aquira origin and archive record. | Aligns page language with brand-intent searches without keyword stuffing. |
 | Measurement | Consent-aware GA4 is configured for the US-English property and web stream. | Enables measurement only after a visitor permits analytics. |
@@ -33,7 +33,7 @@ The `analytics.js` loader emits a denied consent default and does not request th
 
 After GitHub Pages publishes the commit, complete the following checks in the connected Search Console property:
 
-1. Submit `https://www.aquira1978.com/sitemap.xml` in **Sitemaps** and confirm that Google can fetch it. Sitemap submission is a crawl hint rather than an indexing guarantee. [2]
+1. Submit `https://www.aquira1978.com/sitemap.xml` in **Sitemaps** and confirm that Google can fetch the current sixteen-URL bilingual sitemap. Sitemap submission is a crawl hint rather than an indexing guarantee. [2]
 2. Inspect `https://www.aquira1978.com/en/` and request indexing only after the live HTML contains the new canonical, `en-US` alternate, and structured-data markup.
 3. Review the **Pages** report weekly for excluded URLs, canonical conflicts, or crawl failures. The baseline at connection time was three indexed pages and ten non-indexed pages.
 4. Use the GA4 **Traffic acquisition** report for `Organic Search`, then compare it with Search Console’s query and page reports. Track the English homepage, `/en/about/`, and `/en/contact/` separately.

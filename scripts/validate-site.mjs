@@ -10,10 +10,18 @@ const pages = [
   ["/about/", "about/index.html", "ja-JP", "AboutPage"],
   ["/contact/", "contact/index.html", "ja-JP", "ContactPage"],
   ["/privacy/", "privacy/index.html", "ja-JP", "WebPage"],
+  ["/name-record/", "name-record/index.html", "ja-JP", "WebPage"],
+  ["/archive-methodology/", "archive-methodology/index.html", "ja-JP", "WebPage"],
+  ["/documented-timeline/", "documented-timeline/index.html", "ja-JP", "WebPage"],
+  ["/official-use-corrections/", "official-use-corrections/index.html", "ja-JP", "WebPage"],
   ["/en/", "en/index.html", "en-US", "WebPage"],
   ["/en/about/", "en/about/index.html", "en-US", "AboutPage"],
   ["/en/contact/", "en/contact/index.html", "en-US", "ContactPage"],
   ["/en/privacy/", "en/privacy/index.html", "en-US", "WebPage"],
+  ["/en/name-record/", "en/name-record/index.html", "en-US", "WebPage"],
+  ["/en/archive-methodology/", "en/archive-methodology/index.html", "en-US", "WebPage"],
+  ["/en/documented-timeline/", "en/documented-timeline/index.html", "en-US", "WebPage"],
+  ["/en/official-use-corrections/", "en/official-use-corrections/index.html", "en-US", "WebPage"],
 ];
 const heroAlt = {
   ja: "梁のある室内、カウンター、花、吊り下げ照明、右側に立つ人物を写したモノクロ写真",
@@ -48,6 +56,10 @@ for (const [pathname, file, language, type] of pages) {
   assert(graph.some((item) => item["@type"] === type), `${file}: ${type} schema missing`);
   assert(graph.some((item) => item["@type"] === "WebSite"), `${file}: WebSite schema missing`);
   if (pathname === "/en/") assert(graph.some((item) => item["@type"] === "Organization"), `${file}: Organization schema missing`);
+  if (pathname.includes("name-record") || pathname.includes("archive-methodology") || pathname.includes("documented-timeline") || pathname.includes("official-use-corrections")) {
+    assert(graph.some((item) => item["@type"] === "BreadcrumbList"), `${file}: archive breadcrumb schema missing`);
+    assert(html.includes(language === "en-US" ? 'href="/en/name-record/"' : 'href="/name-record/"'), `${file}: archive navigation entry missing`);
+  }
   if (language === "en-US") {
     assert(html.includes(`class="language-link" href="${japanese}"`), `${file}: Japanese switch link missing`);
     for (const leaked of ["主要ナビゲーション", "お問い合わせ", "最終更新", "記録について"]) assert(!html.includes(leaked), `${file}: untranslated UI string ${leaked}`);
@@ -64,7 +76,13 @@ assert(englishHome.includes("Aquira Official Archive &amp; Name Origin"), "US En
 assert(englishHome.includes("The official Aquira archive and name record."), "US English H1 does not express the page entity");
 assert((englishHome.match(/<meta name="description"/g) ?? []).length === 1, "US English page must have exactly one meta description");
 assert(englishHome.includes('<link rel="preload" as="image"') && englishHome.includes('fetchpriority="high"'), "English hero preload missing");
+const englishTimeline = await readFile(path.join(root, "en/documented-timeline/index.html"), "utf8");
+assert(englishTimeline.includes("No dated entries are published at present."), "Timeline evidence-led empty state missing");
+assert(!englishTimeline.includes("1978 is"), "Timeline must not infer a date meaning from the name");
+const englishUse = await readFile(path.join(root, "en/official-use-corrections/index.html"), "utf8");
+assert(englishUse.includes("An enquiry alone does not grant permission for use."), "Use-enquiry permission boundary missing");
 await access(path.join(root, "analytics.js"));
+await access(path.join(root, "content/archive-pages.js"));
 await access(path.join(root, "media/aquira-archive-interior.webp"));
 await access(path.join(root, "media/aquira-archive-interior-mobile.webp"));
 

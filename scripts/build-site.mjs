@@ -5,6 +5,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const contentUrl = pathToFileURL(path.join(root, "content", "site-content.js"));
 const { default: content } = await import(`${contentUrl.href}?updated=${Date.now()}`);
+const archiveContentUrl = pathToFileURL(path.join(root, "content", "archive-pages.js"));
+const { default: archivePages } = await import(`${archiveContentUrl.href}?updated=${Date.now()}`);
 
 const escapeHtml = (value) => String(value)
   .replaceAll("&", "&amp;")
@@ -62,8 +64,10 @@ function languageAlternates(pathname) {
 function header(pathname, language) {
   const isEnglish = language === "en";
   const aboutHref = isEnglish ? "/en/about/" : "/about/";
+  const archiveHref = isEnglish ? "/en/name-record/" : "/name-record/";
   const languageHref = isEnglish ? jaPath(pathname) : enPath(pathname);
-  return `<header class="site-header"><a class="wordmark" href="${isEnglish ? "/en/" : "/"}" aria-label="${isEnglish ? "Aquira1978 home" : "Aquira1978 ホーム"}">AQUIRA1978</a><nav aria-label="${isEnglish ? "Primary navigation" : "主要ナビゲーション"}"><a href="${aboutHref}"${pathname === aboutHref ? ' aria-current="page"' : ""}>${isEnglish ? "About the Archive" : "記録について"}</a><a class="language-link" href="${languageHref}" aria-label="${isEnglish ? "Switch to Japanese" : "Switch to English"}">${isEnglish ? "日本語" : "EN"}</a><span class="language-link language-link--current" aria-current="page">${isEnglish ? "EN-US" : "日本語"}</span></nav><a class="header-contact" href="mailto:${content.contact.email}">${isEnglish ? "Contact" : "お問い合わせ"}</a></header>`;
+  const archiveCurrent = pathname.includes("name-record") || pathname.includes("archive-methodology") || pathname.includes("documented-timeline") || pathname.includes("official-use-corrections");
+  return `<header class="site-header"><a class="wordmark" href="${isEnglish ? "/en/" : "/"}" aria-label="${isEnglish ? "Aquira1978 home" : "Aquira1978 ホーム"}">AQUIRA1978</a><nav aria-label="${isEnglish ? "Primary navigation" : "主要ナビゲーション"}"><a href="${aboutHref}"${pathname === aboutHref ? ' aria-current="page"' : ""}>${isEnglish ? "About" : "記録について"}</a><a href="${archiveHref}"${archiveCurrent ? ' aria-current="page"' : ""}>${isEnglish ? "Archive" : "アーカイブ"}</a><a class="language-link" href="${languageHref}" aria-label="${isEnglish ? "Switch to Japanese" : "Switch to English"}">${isEnglish ? "日本語" : "EN"}</a><span class="language-link language-link--current" aria-current="page">${isEnglish ? "EN-US" : "日本語"}</span></nav><a class="header-contact" href="mailto:${content.contact.email}">${isEnglish ? "Contact" : "お問い合わせ"}</a></header>`;
 }
 
 function networkCards(language) {
@@ -104,11 +108,36 @@ function analyticsBanner(language) {
   return `<section class="analytics-consent" data-analytics-banner hidden role="dialog" aria-label="${isEnglish ? "Analytics consent" : "解析への同意"}"><p>${message}</p><div class="analytics-consent__actions"><button class="button" type="button" data-analytics-accept>${allow}</button><button class="analytics-consent__decline" type="button" data-analytics-decline>${decline}</button></div></section>`;
 }
 
+function archiveIndex(language, { compact = false } = {}) {
+  const isEnglish = language === "en";
+  const entries = isEnglish ? archivePages.english : archivePages.japanese;
+  const title = isEnglish ? "Archive records" : "アーカイブの記録";
+  const intro = isEnglish
+    ? "Four public pages explain what the Aquira archive records, how it verifies material, and how a correction or use enquiry can be made."
+    : "Aquiraアーカイブが扱う記録、確認の基準、訂正や利用に関するお問い合わせを、4つの公開ページでご案内します。";
+  const cardMarkup = entries.map((entry, index) => `<article class="archive-card"><a href="${isEnglish ? `/en${entry.route}` : entry.route}"><p class="index">${String(index + 1).padStart(2, "0")}</p><h3>${entry.eyebrow}</h3><p>${entry.h1}</p><span class="archive-card__cta">${isEnglish ? "Read the record" : "記録を読む"} <span aria-hidden="true">→</span></span></a></article>`).join("");
+  return `<section class="section archive-index${compact ? " archive-index--compact" : ""}" aria-labelledby="archive-index-title"><div class="section-heading"><p class="eyebrow">PUBLIC ARCHIVE</p><h2 id="archive-index-title">${title}</h2><p class="statement">${intro}</p></div><div class="archive-card-grid">${cardMarkup}</div></section>`;
+}
+
+function archivePageMain(page, language) {
+  const isEnglish = language === "en";
+  const officialNetwork = isEnglish
+    ? `<section class="section section-muted archive-network" aria-labelledby="official-network-title"><div class="section-heading"><p class="eyebrow">OFFICIAL NETWORK</p><h2 id="official-network-title">Keep each record in its proper place.</h2></div><div class="card-grid"><article class="content-card"><h3>Works & artist information</h3><p>For works, artist information, collaborations, and licensing, visit the official artist site.</p><a class="archive-text-link" href="https://www.aquira.art/en/" rel="external noopener noreferrer">aquira.art <span aria-hidden="true">→</span></a></article><article class="content-card"><h3>Dialogue & projects</h3><p>For dialogue, collaboration, and projects engaging with society, visit the official public-practice site.</p><a class="archive-text-link" href="https://www.aquira.org/en/" rel="external noopener noreferrer">aquira.org <span aria-hidden="true">→</span></a></article><article class="content-card"><h3>Archive enquiries</h3><p>For a published record, a correction, or an official form of the name, contact Aquira1978 with the relevant material and context.</p><a class="archive-text-link" href="mailto:${content.contact.email}">Contact the archive <span aria-hidden="true">→</span></a></article></div></section>`
+    : `<section class="section section-muted archive-network" aria-labelledby="official-network-title"><div class="section-heading"><p class="eyebrow">OFFICIAL NETWORK</p><h2 id="official-network-title">情報の役割を、正しい場所に置く。</h2></div><div class="card-grid"><article class="content-card"><h3>作品・作家情報</h3><p>作品、作家情報、協働、利用許諾については、公式の作品サイトをご覧ください。</p><a class="archive-text-link" href="https://www.aquira.art/" rel="external noopener noreferrer">aquira.art <span aria-hidden="true">→</span></a></article><article class="content-card"><h3>対話・プロジェクト</h3><p>対話、協働、社会と交わるプロジェクトについては、公式の公共的実践サイトをご覧ください。</p><a class="archive-text-link" href="https://www.aquira.org/" rel="external noopener noreferrer">aquira.org <span aria-hidden="true">→</span></a></article><article class="content-card"><h3>アーカイブへのお問い合わせ</h3><p>公開記録、訂正、Aquiraの公式表記については、対象となる内容と文脈を添えてAquira1978へご連絡ください。</p><a class="archive-text-link" href="mailto:${content.contact.email}">アーカイブに連絡する <span aria-hidden="true">→</span></a></article></div></section>`;
+  const paragraphs = (text) => escapeHtml(text).replaceAll(content.contact.email, `<a href="mailto:${content.contact.email}">${content.contact.email}</a>`);
+  const records = page.sections.map((section) => `<article><h2>${escapeHtml(section.title)}</h2><div>${section.paragraphs.map((paragraph) => `<p>${paragraphs(paragraph)}</p>`).join("")}</div></article>`).join("");
+  const status = page.status ? `<section class="section archive-status" aria-labelledby="${page.key}-status-title"><p class="eyebrow">${page.status.label}</p><h2 id="${page.key}-status-title">${page.status.title}</h2><p>${page.status.text}</p></section>` : "";
+  return `<section class="hero hero-compact"><p class="eyebrow">${page.eyebrow}</p><h1>${page.h1}</h1><p class="lead">${page.lead}</p></section><section class="section"><div class="prose-list">${records}</div></section>${status}${officialNetwork}${archiveIndex(language, { compact: true })}`;
+}
+
 function schemas(page) {
   const graph = [
     { "@type": "WebSite", "@id": `${content.site.origin}/#website`, url: `${content.site.origin}/`, name: content.site.name, alternateName: content.site.shortName, inLanguage: ["ja-JP", "en-US"], description: page.language === "en" ? english.siteDescription : content.site.description },
     { "@type": page.type, "@id": `${absoluteUrl(page.pathname)}#webpage`, url: absoluteUrl(page.pathname), name: page.title, description: page.description, inLanguage: page.language === "en" ? "en-US" : "ja-JP", isPartOf: { "@id": `${content.site.origin}/#website` }, dateModified: content.site.lastModified },
   ];
+  if (page.archivePage) {
+    graph.push({ "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Aquira1978", item: absoluteUrl(page.language === "en" ? "/en/" : "/") }, { "@type": "ListItem", position: 2, name: page.h1, item: absoluteUrl(page.pathname) }] });
+  }
   if (page.key === "home" && page.language === "en") {
     graph.unshift({
       "@type": "Organization",
@@ -143,7 +172,10 @@ const englishPages = [
   { key: "privacy", language: "en", pathname: "/en/privacy/", output: "en/privacy/index.html", type: "WebPage", title: "Privacy & Analytics | Aquira1978", description: "How Aquira1978 uses optional Google Analytics and how visitors can manage their analytics choice.", main: `<section class="hero hero-compact"><p class="eyebrow">PRIVACY & ANALYTICS</p><h1>${english.privacy.title}</h1><p class="lead">${english.privacy.lead}</p></section><section class="section section-muted"><div class="prose-list"><article><h2>Optional analytics</h2><p>${english.privacy.analytics}</p></article><article><h2>Manage your choice</h2><p>${english.privacy.choice}</p><p class="analytics-preferences"><button class="button" type="button" data-analytics-preference="granted">Allow analytics</button><button class="analytics-consent__decline" type="button" data-analytics-preference="denied">Decline analytics</button></p></article></div></section>` },
 ];
 
-const pages = [...japanesePages, ...englishPages];
+const corePages = [...japanesePages, ...englishPages].map((page) => page.key === "home" ? { ...page, main: `${page.main}${archiveIndex(page.language)}` } : page);
+const archiveJapanesePages = archivePages.japanese.map((page) => ({ ...page, language: "ja", pathname: page.route, type: "WebPage", archivePage: true, main: archivePageMain(page, "ja") }));
+const archiveEnglishPages = archivePages.english.map((page) => ({ ...page, language: "en", pathname: `/en${page.route}`, type: "WebPage", archivePage: true, main: archivePageMain(page, "en") }));
+const pages = [...corePages, ...archiveJapanesePages, ...archiveEnglishPages];
 await Promise.all(pages.map(async (page) => {
   const output = path.join(root, page.output);
   await mkdir(path.dirname(output), { recursive: true });
