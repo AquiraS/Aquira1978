@@ -42,3 +42,15 @@ Google Search Console automatically confirmed ownership of the URL-prefix proper
 ## Verified property baseline
 
 The verified property dashboard now reports 2 web-search clicks in the displayed period, 3 indexed pages, and 10 non-indexed pages. It flags one unused verification token. The token has not been removed because deleting ownership-verification credentials changes access control and was not requested.
+
+## Sitemap resubmission
+
+The existing Search Console sitemap record is `/sitemap.xml`, last read on 2026-01-29, with zero detected pages. Following the successful GitHub Pages deployment, `sitemap.xml` has been entered for resubmission so Google can fetch the current eight-URL bilingual sitemap.
+
+## Sitemap processing confirmed
+
+Search Console accepted the resubmitted `sitemap.xml` and marked it **Successful**. The record now shows a 2026-08-31 submission/read and **8 detected pages**, matching the deployed bilingual sitemap.
+
+## URL inspection
+
+A direct URL-inspection route was not available in the current Search Console browser session, so no manual indexing request was issued. Sitemap processing is complete and provides the crawl-discovery signal for all eight URLs.
