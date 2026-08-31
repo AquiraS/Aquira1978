@@ -15,6 +15,9 @@ const officialNetworkLinks = [
 ];
 const currentJourneyStep = "02";
 const newsLink = '<a href="https://note.com/aquira" target="_blank" rel="external noopener noreferrer" aria-label="Newsを新しいタブで開く">News</a>';
+const heroImage = "/media/aquira-archive-interior.webp";
+const mobileHeroImage = "/media/aquira-archive-interior-mobile.webp";
+const heroAlt = "梁のある室内、カウンター、花、吊り下げ照明、右側に立つ人物を写したモノクロ写真";
 
 function attribute(attributes, name) {
   return attributes.match(new RegExp(`\\s${name}="([^"]*)"`))?.[1];
@@ -82,6 +85,14 @@ for (const file of ["index.html", "about/index.html"]) {
 }
 
 const home = await readFile(path.join(root, "index.html"), "utf8");
+if (!home.includes('class="hero hero-visual"') || !home.includes(`src="${heroImage}"`) || !home.includes(`srcset="${mobileHeroImage}"`) || !home.includes(`alt="${heroAlt}"`)) {
+  throw new Error("index.html: main visual picture, responsive source, or accessible alternative text is missing");
+}
+if (!home.includes('<link rel="preload" as="image"') || !home.includes('fetchpriority="high"')) {
+  throw new Error("index.html: main visual preload is missing");
+}
+await access(path.join(root, heroImage));
+await access(path.join(root, mobileHeroImage));
 const homeChapterCards = [...home.matchAll(/<article class="network-card[^\"]*" data-chapter-card data-journey-step="(\d{2})">([\s\S]*?)<\/article>/g)];
 assert(homeChapterCards.length === officialNetworkLinks.length, `index.html: expected exactly ${officialNetworkLinks.length} chapter cards`);
 for (const [index, expected] of officialNetworkLinks.entries()) {

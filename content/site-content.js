@@ -35,7 +35,7 @@ const siteContent = {
     shortName: "AQUIRA1978",
     origin: "https://www.aquira1978.com",
     description: "Aquiraの名称の起点、来歴、アーカイブ、ブランド利用に関する記録を扱う公式サイトです。",
-    lastModified: "2026-08-29",
+    lastModified: "2026-08-31",
   },
   role: {
     eyebrow: "ORIGIN & ARCHIVE",
