@@ -31,7 +31,6 @@ function networkCards({ chapterCards = false } = {}) {
 function header(pathname) {
   const links = [
     ["記録について", "/about/"],
-    ["お問い合わせ", "/contact/"],
   ];
   return `<header class="site-header"><a class="wordmark" href="/" aria-label="Aquira1978 ホーム">AQUIRA1978</a><nav aria-label="主要ナビゲーション">${links.map(([label, href]) => `<a href="${href}"${pathname === href ? ' aria-current="page"' : ""}>${label}</a>`).join("")}</nav><a class="header-contact" href="mailto:${content.contact.email}">お問い合わせ</a></header>`;
 }
@@ -73,8 +72,7 @@ function layout({ pathname, title, description, main, type }) {
 ${pathname === "/" ? `  <link rel="preload" as="image" href="${absoluteUrl("/media/aquira-archive-interior.webp")}" type="image/webp" fetchpriority="high" />` : ""}
   <link rel="alternate" href="${absoluteUrl(pathname)}" hreflang="ja" />
   <link rel="alternate" href="${absoluteUrl(pathname)}" hreflang="x-default" />
-  <link rel="stylesheet" href="/styles.css?v=20260831" />
-  <script src="/journey.js" defer></script>
+  <link rel="stylesheet" href="/styles.css?v=20260831a" />
   <meta property="og:locale" content="ja_JP" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Aquira1978" />
@@ -93,7 +91,6 @@ ${pathname === "/" ? `  <link rel="preload" as="image" href="${absoluteUrl("/med
 <body data-journey-stage="${escapeHtml(content.journey.stage)}">
   <a class="skip-link" href="#main-content">本文へ移動</a>
   ${header(pathname)}
-  ${journeyRail()}
   <main id="main-content">${main}</main>
   ${footer()}
 </body>
@@ -102,7 +99,7 @@ ${pathname === "/" ? `  <link rel="preload" as="image" href="${absoluteUrl("/med
 
 const homeTitle = "Aquira1978｜起点と記録";
 const homeDescription = content.site.description;
-const homeMain = `<section class="hero hero-visual" aria-labelledby="hero-title">${heroMedia}<div class="hero__content"><p class="eyebrow">${content.role.eyebrow}</p><h1 id="hero-title">${content.role.title}</h1><p class="lead">${content.role.lead}</p><a class="button" href="/about/">記録について知る</a></div></section><section class="section" aria-labelledby="purpose-title"><div class="section-heading"><p class="eyebrow">PURPOSE</p><h2 id="purpose-title">記録に、文脈を添える。</h2></div><div class="card-grid">${content.purpose.map((item) => `<article class="content-card"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></article>`).join("")}</div></section><section class="section section-muted" aria-labelledby="network-title"><div class="section-heading"><p class="eyebrow">OFFICIAL NETWORK</p><h2 id="network-title">3つの入口、ひとつの文脈。</h2></div><p class="statement">Aquiraの公式サイトは、情報の種類ごとに役割を分けています。探している内容に合うサイトへ、明確にご案内します。</p>${networkCards({ chapterCards: true })}</section><section class="section contact-section" aria-labelledby="home-contact-title"><div class="section-heading"><p class="eyebrow">CONTACT</p><h2 id="home-contact-title">記録の確認から、静かに。</h2></div><p class="statement">掲載内容の訂正、公式表記、名称・記録に関するご相談を受け付けています。</p><a class="button" href="/contact/">お問い合わせへ</a></section>`;
+const homeMain = `<section class="hero hero-visual" aria-labelledby="hero-title">${heroMedia}<div class="hero__content"><p class="eyebrow">${content.role.eyebrow}</p><h1 id="hero-title">${content.role.title}</h1><p class="lead">${content.role.lead}</p><a class="button" href="/about/">記録について知る</a></div></section><section class="section" aria-labelledby="purpose-title"><div class="section-heading"><p class="eyebrow">PURPOSE</p><h2 id="purpose-title">記録に、文脈を添える。</h2></div><div class="card-grid">${content.purpose.map((item) => `<article class="content-card"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></article>`).join("")}</div></section><section class="section contact-section" aria-labelledby="home-contact-title"><div class="section-heading"><p class="eyebrow">CONTACT</p><h2 id="home-contact-title">記録の確認から、静かに。</h2></div><p class="statement">掲載内容の訂正、公式表記、名称・記録に関するご相談を受け付けています。</p><a class="button" href="/contact/">お問い合わせへ</a></section>`;
 
 const aboutTitle = "記録について｜Aquira1978";
 const aboutDescription = "Aquira1978における記録の基準、更新の考え方、公式ネットワークの役割を案内します。";
