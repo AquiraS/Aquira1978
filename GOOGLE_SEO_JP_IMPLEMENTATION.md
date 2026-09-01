@@ -29,7 +29,7 @@
 | サイトマップ | 16 URL、各URLに `ja-JP` / `en-US` / `x-default` | 実装済み |
 | ページ固有 metadata | 16ページすべてが 200、固有 title・description・self-canonical・H1を持つ | 実装済み |
 | JSON-LD | 16ページに `WebSite` とページ種別、アーカイブ8ページに `BreadcrumbList`、日本語トップに `Organization` | 実装済み |
-| Lighthouse（公開前のデスクトップ試験） | 実装前の試験では Performance 57、LCP 4.9秒。応答画像を生成後、未公開の本番サイトに対する再試験では Performance 59、LCP 4.0秒、SEO 92、Accessibility 96、Best Practices 100、CLS 0、TBT 30ms。 | 最大課題はヒーロー画像を含む初期表示。サイト公開後にキャッシュを分離して再計測し、Search Consoleの実ユーザーデータで確認する。 |
+| Lighthouse（公開後のデスクトップ試験） | 実装前は Performance 57、LCP 4.9秒。公開済みサイトのキャッシュ分離試験では Performance 89、SEO 100、Accessibility 96、Best Practices 96、LCP 0.8秒、FCP 0.6秒、CLS 0、TBT 20ms。 | 1440px応答画像と preload がラボ試験では初期表示を改善しました。モバイル試験は測定環境がNO_FCPとなったため数値を採用せず、Search Consoleの実ユーザーデータで確認します。 |
 | GA4 | `G-ZHRCFRBR5F` を、同意取得後のみ読み込む構成 | 実装済み |
 
 > Lighthouse は合成環境での一回のラボ計測です。実ユーザーの Core Web Vitals 判定は、Search Console のフィールドデータで確認します。[6]
