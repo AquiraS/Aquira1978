@@ -47,7 +47,7 @@ for (const [pathname, file, language, type] of pages) {
   assert(html.includes(`<link rel="canonical" href="${origin}${pathname}" />`), `${file}: canonical must self-reference`);
   assert(html.includes(`href="${origin}${japanese}" hreflang="ja-JP"`), `${file}: Japanese alternate missing`);
   assert(html.includes(`href="${origin}${english}" hreflang="en-US"`), `${file}: US English alternate missing`);
-  assert(html.includes(`href="${origin}${english}" hreflang="x-default"`), `${file}: English x-default missing`);
+  assert(html.includes(`href="${origin}${japanese}" hreflang="x-default"`), `${file}: Japanese x-default missing`);
   assert((html.match(/<h1\b/g) ?? []).length === 1, `${file}: exactly one H1 is required`);
   assert(html.includes('data-analytics-banner'), `${file}: analytics consent banner missing`);
   const schema = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1];
@@ -55,10 +55,15 @@ for (const [pathname, file, language, type] of pages) {
   const graph = JSON.parse(schema)["@graph"] ?? [];
   assert(graph.some((item) => item["@type"] === type), `${file}: ${type} schema missing`);
   assert(graph.some((item) => item["@type"] === "WebSite"), `${file}: WebSite schema missing`);
-  if (pathname === "/en/") assert(graph.some((item) => item["@type"] === "Organization"), `${file}: Organization schema missing`);
+  if (pathname === "/") {
+    const organization = graph.find((item) => item["@type"] === "Organization");
+    assert(organization, `${file}: Organization schema missing`);
+    assert(organization.name === "Aquira", `${file}: Organization schema must use Aquira as the entity name`);
+  }
   if (pathname.includes("name-record") || pathname.includes("archive-methodology") || pathname.includes("documented-timeline") || pathname.includes("official-use-corrections")) {
     assert(graph.some((item) => item["@type"] === "BreadcrumbList"), `${file}: archive breadcrumb schema missing`);
     assert(html.includes(language === "en-US" ? 'href="/en/name-record/"' : 'href="/name-record/"'), `${file}: archive navigation entry missing`);
+    assert(html.includes('class="breadcrumb"'), `${file}: visible breadcrumb navigation missing`);
   }
   if (language === "en-US") {
     assert(html.includes(`class="language-link" href="${japanese}"`), `${file}: Japanese switch link missing`);
@@ -72,10 +77,12 @@ const japaneseHome = await readFile(path.join(root, "index.html"), "utf8");
 const englishHome = await readFile(path.join(root, "en/index.html"), "utf8");
 assert(japaneseHome.includes(`alt="${heroAlt.ja}"`), "Japanese hero alt missing");
 assert(englishHome.includes(`alt="${heroAlt.en}"`), "English hero alt missing");
+assert(japaneseHome.includes("Aquira公式アーカイブ｜起点・来歴・記録"), "Japanese homepage title is not specific enough");
+assert(japaneseHome.includes("Aquiraの起点と、歩みの記録。"), "Japanese homepage H1 does not express the Aquira entity");
 assert(englishHome.includes("Aquira Official Archive &amp; Name Origin"), "US English title is not specific enough");
 assert(englishHome.includes("The official Aquira archive and name record."), "US English H1 does not express the page entity");
 assert((englishHome.match(/<meta name="description"/g) ?? []).length === 1, "US English page must have exactly one meta description");
-assert(englishHome.includes('<link rel="preload" as="image"') && englishHome.includes('fetchpriority="high"'), "English hero preload missing");
+assert(englishHome.includes('aquira-archive-interior-1440.webp') && englishHome.includes('imagesrcset=') && englishHome.includes('fetchpriority="high"'), "English responsive hero preload missing");
 const englishTimeline = await readFile(path.join(root, "en/documented-timeline/index.html"), "utf8");
 assert(englishTimeline.includes("No dated entries are published at present."), "Timeline evidence-led empty state missing");
 assert(!englishTimeline.includes("1978 is"), "Timeline must not infer a date meaning from the name");
@@ -84,6 +91,7 @@ assert(englishUse.includes("An enquiry alone does not grant permission for use."
 await access(path.join(root, "analytics.js"));
 await access(path.join(root, "content/archive-pages.js"));
 await access(path.join(root, "media/aquira-archive-interior.webp"));
+await access(path.join(root, "media/aquira-archive-interior-1440.webp"));
 await access(path.join(root, "media/aquira-archive-interior-mobile.webp"));
 
 const sitemap = await readFile(path.join(root, "sitemap.xml"), "utf8");

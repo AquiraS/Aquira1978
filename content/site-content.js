@@ -32,18 +32,18 @@ const journeyChapters = [
 const siteContent = {
   site: {
     name: "Aquira1978",
-    shortName: "AQUIRA1978",
+    alternateName: "Aquira",
     origin: "https://www.aquira1978.com",
-    description: "Aquiraの名称の起点、来歴、アーカイブ、ブランド利用に関する記録を扱う公式サイトです。",
-    lastModified: "2026-08-31",
+    description: "Aquiraの公式アーカイブ。名称の起点、来歴、確認できる記録、公式表記に関する情報を扱います。",
+    lastModified: "2026-09-01",
   },
   analytics: {
     measurementId: "G-ZHRCFRBR5F",
   },
   role: {
     eyebrow: "ORIGIN & ARCHIVE",
-    title: "名前の起点と、歩みの記録。",
-    lead: "Aquira1978は、Aquiraという名称の由来、来歴、アーカイブ、ブランド利用に関する記録を扱う公式サイトです。作品・作家情報はaquira.art、対話と協働のプロジェクトはaquira.orgでご案内します。",
+    title: "Aquiraの起点と、歩みの記録。",
+    lead: "Aquira1978は、Aquiraという名称の起点、来歴、確認できる記録、公式表記に関する情報を扱う公式アーカイブです。作品・作家情報はaquira.art、対話と協働のプロジェクトはaquira.orgでご案内します。",
   },
   purpose: [
     {
